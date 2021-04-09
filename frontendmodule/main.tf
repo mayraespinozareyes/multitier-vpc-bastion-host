@@ -1,18 +1,3 @@
-##############################################################################
-# Sample module to deploy a 'frontend' webserver VSI and security group  
-# No NACL is defined. As no floating (public) IPs are defined # Security Group 
-# configuration by itself is considered sufficient to protect access to the webserver.
-# Subnets are defined in the VPC module. 
-#
-# Redhat Ansible usage is enabled by the addition of VSI tags. All Ansible related VSI 
-# tags are prefixed with "ans_group:" followed by the group name.   '
-# tags = ["ans_group:backend"]'  
-# Correct specification of tags is essential for operation of the Ansible dynamic inventory
-# script used to pass host information to Ansible. The tags here should match the roles
-# defined in the site.yml playbook file. 
-##############################################################################
-
-
 resource "ibm_is_instance" "frontend-server" {
   count   = var.frontend_count
   name    = "${var.unique_id}-frontend-vsi-${count.index + 1}"
@@ -29,13 +14,11 @@ resource "ibm_is_instance" "frontend-server" {
   resource_group = var.ibm_is_resource_group_id
   keys           = [var.ibm_is_ssh_key_id]
   tags           = ["schematics:group:frontend"]
-  #user_data      = data.template_cloudinit_config.app_userdata.rendered
 }
 
 
 ##############################################################################
 # Public load balancer
-# 
 ##############################################################################
 
 

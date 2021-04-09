@@ -1,15 +1,3 @@
-
-##############################################################################
-# Config to dynamically create bastion host Network ACL and rules
-#
-# Base rules for access to DNS, repos are predefined. Inputs required for 
-# target subnets bastion host will connect to and the source CIDRs of the servers
-# that will connect via the bastion host
-##############################################################################
-
-
-
-
 # Generate rules for limiting access to SSH public source subnets/CIDRs 
 # and IBM Cloud private destination subnets/CIDRs
 locals {
@@ -34,15 +22,6 @@ locals {
   sourcerules = concat(local.sourceinboundrules, local.sourceoutboundrules)
 }
 
-# output "list_frontend" {
-#   value = local.destrules
-# }
-
-# output "list_source" {
-#   value = local.sourcerules
-# }
-
-
 locals {
   keys = ["action", "source", "destination", "direction", "type", "source_port_min", "source_port_max", "port_min", "port_max"]
 
@@ -53,8 +32,6 @@ locals {
     ["allow", "161.26.0.0/16", "0.0.0.0/0", "inbound", "udp", 53, 53, 1024, 65535],
     ["allow", "0.0.0.0/0", "161.26.0.0/16", "outbound", "tcp", 1024, 65535, 80, 80],
     ["allow", "0.0.0.0/0", "161.26.0.0/16", "outbound", "udp", 1024, 65535, 53, 53],
-    #["allow", "166.9.0.0/16", "0.0.0.0/0", "inbound", "tcp", 1, 65535, 1024, 65535],
-    #["allow", "0.0.0.0/0", "166.9.0.0/16", "outbound", "tcp", 1024, 65535, 1, 65535],
     ["deny", "0.0.0.0/0", "0.0.0.0/0", "inbound", "all", 1, 65535, 1, 65535],
     ["deny", "0.0.0.0/0", "0.0.0.0/0", "outbound", "all", 1, 65535, 1, 65535],
   ]
@@ -89,9 +66,6 @@ locals {
   ]
 }
 
-# output "list_nacl_rules" {
-#   value = local.rulesmerge
-# }
 
 resource "ibm_is_network_acl" "bastion_acl" {
   name           = "${var.unique_id}-bastion-acl"

@@ -1,14 +1,3 @@
-
-##############################################################################
-# Config to dynamically create bastion host Security Group and rules
-#
-# Base rules for access to DNS, repos are predefined. Inputs required for 
-# target SG's bastion host will connect to and the source CIDRs of the servers
-# that will connect via the bastion host
-##############################################################################
-
-
-
 # this is the SG applied to the bastion instance
 resource "ibm_is_security_group" "bastion" {
   name           = "${var.unique_id}-bastion-sg"
